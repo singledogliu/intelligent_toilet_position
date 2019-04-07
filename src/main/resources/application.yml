@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/intelligent_boot_of_toilet_position?characterEncoding=UTF-8&useAffectedRows=true
+    username: root
+    password:
+  mvc:
+    static-path-pattern: /**
+
+datasource:
+
+mybatis:
+  type-aliases-package: com.ldq.graduation.design.pojo
+  mapper-locations: classpath:Mapper/*Mapper.xml

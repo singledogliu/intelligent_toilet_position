@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldq.graduation.design.dao.ToiletPositionMapper">
+<insert id="insert" >
+      insert into toilet_position (toilet_position_code, start_time,gender, toilet_code, regional_code)
+      values (#{toiletPositionCode},#{startTime},#{gender},#{toiletCode},#{regionalCode})
+</insert>
+
+    <select id="update" resultType="integer">
+      update toilet_position
+      set end_time = #{endTime}
+      where regional_code = #{regionalCode}
+        and toilet_code = #{toiletCode}
+        and gender = #{gender}
+        and toilet_position_code = #{toiletPositionCode}
+        and end_time is null
+    </select>
+</mapper>
