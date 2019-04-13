@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -21,19 +22,19 @@ public class ToiletPositionInfo {
 	/**
 	 * 厕位一次使用开始时间
 	 */
-	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date startTime;
+	private Timestamp startTime;
 	/**
 	 *厕位一次使用结束时间
 	 */
-	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date endTime;
+	private Timestamp endTime;
+	/**
+	 * 使用时长
+	 */
+	private int duration;
 	/**
 	 * 	 *厕位所在厕所的性别（男0/女1）
 	 */
-	private Boolean gender;
+	private String gender;
 	/**
 	 * 厕位所在厕所代号
 	 */

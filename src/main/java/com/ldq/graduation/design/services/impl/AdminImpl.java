@@ -12,7 +12,7 @@ import com.ldq.graduation.design.services.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//@Repository("iAdminService")
+
 @Service
 public class AdminImpl implements IAdminService {
 	@Autowired
@@ -20,39 +20,51 @@ public class AdminImpl implements IAdminService {
 	/**
 	 * 根据账号查找记录
 	 *
-	 * @param account 管理员账号
+	 * @param adminAccount 管理员账号
 	 * @return 查找到的记录
 	 */
 	@Override
-	public AdminInfo selectByaccount(String account) {
-		AdminInfo adminInfo = adminMapper.selectByaccount(account);
+	public AdminInfo selectByaccount(String adminAccount) {
+		AdminInfo adminInfo = adminMapper.selectByaccount(adminAccount);
 		return adminInfo;
 	}
 
 	/**
 	 * 管理员注册
-	 * @param AdminAccount  管理员账号
-	 * @param AdminPassword 管理员密码
-	 * @param AdminName     管理员姓名
-	 * @param AdminPhone    管理员电话
-	 * @param RegionalCode  所负者区域代号
+	 * @param adminAccount  管理员账号
+	 * @param adminPassword 管理员密码
+	 * @param adminName     管理员姓名
+	 * @param adminPhone    管理员电话
+	 * @param regionalCode  所负者区域代号
 	 * @return 受影响的条数
 	 */
 	@Override
-	public int register(String AdminAccount, String AdminPassword, String AdminName, String AdminPhone, String RegionalCode) {
-		int result = adminMapper.insert(AdminAccount,AdminPassword,AdminName,AdminPhone,RegionalCode);
+	public int register(String adminAccount, String adminPassword, String adminName, String adminPhone, String regionalCode) {
+		int result = adminMapper.insert(adminAccount,adminPassword,adminName,adminPhone,regionalCode);
 		return result;
 	}
 
 	/**
 	 * 检查账号是否已存在
 	 *
-	 * @param AdminAccount 	管理员账号
+	 * @param adminAccount 	管理员账号
 	 * @return 				是否存在（1表示存在，0表示不存在）
 	 */
 	@Override
-	public int check(String AdminAccount) {
-		int result = adminMapper.check(AdminAccount);
+	public int check(String adminAccount) {
+		int result = adminMapper.check(adminAccount);
+		return result;
+	}
+
+	/**
+	 * 管理员注销
+	 *
+	 * @param adminAccount 管理员账号
+	 * @return 受影响的条数
+	 */
+	@Override
+	public int logout(String adminAccount) {
+		int result = adminMapper.deleteByaccount(adminAccount);
 		return result;
 	}
 

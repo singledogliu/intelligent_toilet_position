@@ -12,10 +12,6 @@ import lombok.Data;
 public class RegionalInfo {
 
 	/**
-	 * 区域代号
-	 */
-	private String regionalCode;
-	/**
 	 * 区域名称
 	 */
 	private String regionalName;

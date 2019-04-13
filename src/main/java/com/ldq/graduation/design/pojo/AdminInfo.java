@@ -26,7 +26,7 @@ public class AdminInfo {
 	 */
 	private String adminPhone;
 	/**
-	 * 管理员所负责的区域代号
+	 * 管理员所负责的区域名称
 	 */
-	private String regionalCode;
+	private String regionalName;
 }
