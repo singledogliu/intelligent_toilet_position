@@ -11,6 +11,10 @@ import lombok.Data;
 @Data
 public class ToiletInfo {
 	/**
+	 * 厕所所在区域名称
+	 */
+	private String regionalName;
+	/**
 	 * 厕所代号
 	 */
 	private String toiletCode;
@@ -18,10 +22,6 @@ public class ToiletInfo {
 	 * 厕所所在位置
 	 */
 	private String position;
-	/**
-	 * 厕所所在区域代号
-	 */
-	private String regionalCode;
 	/**
 	 * 厕所负责人名字
 	 */

@@ -172,6 +172,8 @@ public class Admin {
 		}
 	}
 
+//	public
+
 	/**
 	 * 	管理员注销
 	 * @param request		网络请求
@@ -195,9 +197,9 @@ public class Admin {
 	}
 
 	/**
-	 * 获取某个区域的所有使用信息
-	 * @param request
-	 * @return
+	 * 获取某个区域指定时间段的所有使用信息
+	 * @param request		前端发来的数据
+	 * @return				某个区域指定时间段的所有厕位使用数据
 	 */
 	@RequestMapping("/getRegionalStatistics")
 	@ResponseBody
@@ -207,6 +209,22 @@ public class Admin {
 		date = date +"%";
 		List<ToiletPositionInfo> regionalStatistics = iRegionalService.getRegionalStatistics(regionalName,date);
 		return regionalStatistics;
+	}
+
+	/**
+	 * 获取某个厕所指定时间段的所有使用数据
+	 * @param request		前端发来的数据
+	 * @return				某个厕所指定时间段内的所有厕位使用数据
+	 */
+	@RequestMapping("/getToiletStatistics")
+	@ResponseBody
+	public List getToiletStatistics(HttpServletRequest request){
+		String regionalName = request.getParameter("regionalName");
+		String toiletCode = request.getParameter("toiletCode");
+		String date = request.getParameter("date");
+		date = date + "%";
+		List<ToiletPositionInfo> toiletStatistics = iToiletService.getToiletStatistics(regionalName,toiletCode,date);
+		return toiletStatistics;
 	}
 
 }

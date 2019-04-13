@@ -65,5 +65,15 @@ public interface ToiletPositionMapper {
 	 * @return					所有数据
 	 */
 	List<ToiletPositionInfo> selectAllByRegionalName(@Param("regionalName") String regionalName, @Param("date") String date);
+
+	/**
+	 * 查询某厕所指定时间段的所有使用数据
+	 * @param regionalName		区域名称
+	 * @param toiletCode		厕所代号
+	 * @param date				指定时间
+	 * @return					某厕所指定时间段的所有使用数据
+	 */
+	List<ToiletPositionInfo> selectAllByToiletCode(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("date") String date);
+
 }
 
