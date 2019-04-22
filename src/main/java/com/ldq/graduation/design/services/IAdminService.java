@@ -43,5 +43,36 @@ public interface IAdminService {
 	 * @return					受影响的条数
 	 */
 	int logout(String adminAccount);
+
+	/**
+	 * 修改管理员信息
+	 *
+	 * @param oldAdminAccount 原管理员账号
+	 * @param adminAccount    新管理员账号
+	 * @param adminName       管理员名称
+	 * @param adminPassword   管理员密码
+	 * @param adminPhone      管理员电话
+	 * @return 修改结果（受影响条数）
+	 */
+	int modifyInformation(String oldAdminAccount, String adminAccount, String adminName, String adminPassword, String adminPhone);
+
+	/**
+	 * 修改电话和账号
+	 *
+	 * @param oldAdminAccount 原管理员账号
+	 * @param adminPhone      新管理员电话
+	 * @return 修改结果（受影响条数）
+	 */
+	int modifyAccountAndPhone(String oldAdminAccount, String adminPhone);
+
+	/**
+	 * 修改管理员密码
+	 *
+	 * @param adminAccount     管理员账号
+	 * @param oldAdminPassword 原管理员密码
+	 * @param adminPassword    新管理员密码
+	 * @return 修改结果（受影响条数）
+	 */
+	int modifyPassword(String adminAccount, String oldAdminPassword, String adminPassword);
 }
 

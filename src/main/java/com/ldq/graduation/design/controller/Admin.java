@@ -26,11 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 import java.util.Random;
-
-import static jdk.nashorn.internal.objects.Global.println;
 
 
 @Controller
@@ -58,9 +55,10 @@ public class Admin {
 
 	/**
 	 * 增加一条区域记录
-	 * @param regionalName					区域名称
-	 * @param regionalResponsibleName		区域负责人名称
-	 * @return								受影响条数
+	 *
+	 * @param regionalName            区域名称
+	 * @param regionalResponsibleName 区域负责人名称
+	 * @return 受影响条数
 	 */
 	public int addRegional(String regionalName, String regionalResponsibleName) {
 		int result = iRegionalService.add(regionalName, regionalResponsibleName);
@@ -69,12 +67,13 @@ public class Admin {
 
 	/**
 	 * 获取短信验证码
-	 * @param httpServletRequest		前端发来的请求数据（电话号码）
-	 * @return							随机生成的验证码
+	 *
+	 * @param httpServletRequest 前端发来的请求数据（电话号码）
+	 * @return 随机生成的验证码
 	 */
 	@RequestMapping("/verification")
 	@ResponseBody
-	public String getIdentifyingCode(HttpServletRequest httpServletRequest){
+	public String getIdentifyingCode(HttpServletRequest httpServletRequest) {
 		String phone = httpServletRequest.getParameter("phone");
 		DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAIdF0xHjRDsHAD", "HAbQSwP2o1BZdrcQSxLhTfXkhoL5ic");
 		IAcsClient client = new DefaultAcsClient(profile);
@@ -91,7 +90,7 @@ public class Admin {
 		request.putQueryParameter("PhoneNumbers", phone);
 		request.putQueryParameter("SignName", "厕位智能引导系统");
 		request.putQueryParameter("TemplateCode", "SMS_163057305");
-		request.putQueryParameter("TemplateParam", "{\"code\":"+identifyingCode+"}");
+		request.putQueryParameter("TemplateParam", "{\"code\":" + identifyingCode + "}");
 		try {
 			CommonResponse response = client.getCommonResponse(request);
 			System.out.println(response.getData());
@@ -113,15 +112,16 @@ public class Admin {
 	@ResponseBody
 	public String login(HttpServletRequest request) {
 //		账号
-		String adminAccount = (String) request.getSession().getAttribute("account");
+		String adminAccount = request.getParameter("account");
 //		密码
-		String adminPassword = (String) request.getSession().getAttribute("password");
+		String adminPassword = request.getParameter("password");
 		AdminInfo adminInfo = iAdminService.selectByaccount(adminAccount);
+//		System.out.println(adminInfo.toString());
 		String reason;
 		if (adminInfo == null) {
 			reason = "账号错误";
 			return reason;
-		} else if (adminInfo.getAdminPassword() != adminPassword) {
+		} else if (!adminInfo.getAdminPassword().equals(adminPassword)) {
 			reason = "密码错误";
 			return reason;
 		} else {
@@ -158,10 +158,9 @@ public class Admin {
 			if (result != 0) {
 				request.getSession().setAttribute("adminAccount", adminAccount);
 				int resultRegional = addRegional(regionalName, adminName);
-				if (resultRegional != 0){
+				if (resultRegional != 0) {
 					return "注册成功";
-				}
-				else{
+				} else {
 					return "注册失败，管辖区域注册失败";
 				}
 			} else {
@@ -172,12 +171,54 @@ public class Admin {
 		}
 	}
 
-//	public
+	/**
+	 * 修改管理员信息
+	 *
+	 * @param request 前端发来的数据请求
+	 * @return 修改结果
+	 */
+	@RequestMapping("/modifyInformation")
+	@ResponseBody
+	public int modifyInformation(HttpServletRequest request) {
+//		管理员账号
+		String adminAccount = request.getParameter("account");
+//		管理员姓名
+		String adminName = request.getParameter("name");
+//		管理员密码
+		String adminPassword = request.getParameter("password");
+//		原管理员密码
+		String oldAdminPassword = request.getParameter("oldPassword");
+//		管理员电话
+		String adminPhone = request.getParameter("phone");
+//		原管理员账号
+		String oldAdminAccount = (String) request.getSession().getAttribute("adminAccount");
+//		欲执行的操作
+		String action = request.getParameter("action");
+		int result = 0;
+		switch (action) {
+			case "修改电话":
+				result = iAdminService.modifyAccountAndPhone(oldAdminAccount, adminPhone);
+				if (result != 0) {
+					request.getSession().setAttribute("adminAccount", adminPhone);
+				}
+				break;
+			case "修改密码":
+				result = iAdminService.modifyPassword(oldAdminAccount, oldAdminPassword, adminPassword);
+				break;
+			case "修改全部":
+				result = iAdminService.modifyInformation(oldAdminAccount, adminAccount, adminName, adminPassword, adminPhone);
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
 
 	/**
-	 * 	管理员注销
-	 * @param request		网络请求
-	 * @return				注销结果
+	 * 管理员注销
+	 *
+	 * @param request 网络请求
+	 * @return 注销结果
 	 */
 	@RequestMapping("/logout")
 	@ResponseBody
@@ -190,7 +231,7 @@ public class Admin {
 		int resultToilet = iToiletService.logout(regionalName);
 		int resultToiletPosition = iToiletPositionService.logout(regionalName);
 		String stat = "注销失败";
-		if(resultAdmin > 0 && resultRegional > 0 && resultToilet > 0 && resultToiletPosition > 0) {
+		if (resultAdmin > 0 && resultRegional > 0 && resultToilet > 0 && resultToiletPosition > 0) {
 			stat = "注销成功";
 		}
 		return stat;
@@ -198,32 +239,34 @@ public class Admin {
 
 	/**
 	 * 获取某个区域指定时间段的所有使用信息
-	 * @param request		前端发来的数据
-	 * @return				某个区域指定时间段的所有厕位使用数据
+	 *
+	 * @param request 前端发来的数据
+	 * @return 某个区域指定时间段的所有厕位使用数据
 	 */
 	@RequestMapping("/getRegionalStatistics")
 	@ResponseBody
-	public List getRegionalStatistics(HttpServletRequest request){
+	public List getRegionalStatistics(HttpServletRequest request) {
 		String regionalName = request.getParameter("regionalName");
 		String date = request.getParameter("date");
-		date = date +"%";
-		List<ToiletPositionInfo> regionalStatistics = iRegionalService.getRegionalStatistics(regionalName,date);
+		date = date + "%";
+		List<ToiletPositionInfo> regionalStatistics = iRegionalService.getRegionalStatistics(regionalName, date);
 		return regionalStatistics;
 	}
 
 	/**
 	 * 获取某个厕所指定时间段的所有使用数据
-	 * @param request		前端发来的数据
-	 * @return				某个厕所指定时间段内的所有厕位使用数据
+	 *
+	 * @param request 前端发来的数据
+	 * @return 某个厕所指定时间段内的所有厕位使用数据
 	 */
 	@RequestMapping("/getToiletStatistics")
 	@ResponseBody
-	public List getToiletStatistics(HttpServletRequest request){
+	public List getToiletStatistics(HttpServletRequest request) {
 		String regionalName = request.getParameter("regionalName");
 		String toiletCode = request.getParameter("toiletCode");
 		String date = request.getParameter("date");
 		date = date + "%";
-		List<ToiletPositionInfo> toiletStatistics = iToiletService.getToiletStatistics(regionalName,toiletCode,date);
+		List<ToiletPositionInfo> toiletStatistics = iToiletService.getToiletStatistics(regionalName, toiletCode, date);
 		return toiletStatistics;
 	}
 

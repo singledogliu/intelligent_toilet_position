@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldq.graduation.design.dao.AdminMapper">
+    <resultMap id="AdminInfo" type="AdminInfo" autoMapping="true">
+        <result property="adminAccount" column="admin_account"></result>
+        <result property="adminName" column="admin_name"></result>
+        <result property="adminPassword" column="password"></result>
+        <result property="adminPhone" column="phone_number"></result>
+        <result property="regionalName" column="regional_name"></result>
+    </resultMap>
+
     <!--通过账号查找记录-->
-    <select id="selectByaccount" resultType="AdminInfo">
+    <select id="selectByaccount" resultMap="AdminInfo">
         select * from administrators where admin_account = #{account}
     </select>
     <!--插入一条新数据-->
@@ -14,6 +22,28 @@
     <select id="check" resultType="int">
       select count(*) from administrators where admin_account = #{AdminAccount}
     </select>
+
+    <!--修改管理员信息-->
+    <update id="update">
+        update administrators
+        set admin_account = #{adminAccount},admin_name = #{adminName},password = #{adminPassword},phone_number = #{adminPhone}
+        where admin_account = #{oldAdminAccount}
+    </update>
+    <!--修改管理员账号和手机号码-->
+    <update id="updateAccountAndPhone">
+        update administrators
+        set admin_account = #{adminPhone},phone_number = #{adminPhone}
+        where admin_account = #{oldAdminAccount}
+    </update>
+
+    <!--修改管理员密码-->
+    <update id="updatePassword">
+        update administrators
+        set password = #{adminPassword}
+        where admin_account = #{adminAccount}
+        and password = #{oldAdminPassword}
+    </update>
+
     <!--通过账号删除一条记录-->
     <delete id="deleteByaccount">
         delete from administrators where admin_account = #{adminAccount}

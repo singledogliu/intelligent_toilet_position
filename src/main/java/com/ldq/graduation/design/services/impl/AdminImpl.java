@@ -68,5 +68,48 @@ public class AdminImpl implements IAdminService {
 		return result;
 	}
 
+	/**
+	 * 修改管理员信息
+	 *
+	 * @param oldAdminAccount 原管理员账号
+	 * @param adminAccount    新管理员账号
+	 * @param adminName       管理员名称
+	 * @param adminPassword   管理员密码
+	 * @param adminPhone      管理员电话
+	 * @return 修改结果（受影响条数）
+	 */
+	@Override
+	public int modifyInformation(String oldAdminAccount, String adminAccount, String adminName, String adminPassword, String adminPhone) {
+		int result = adminMapper.update(oldAdminAccount, adminAccount, adminName, adminPassword, adminPhone);
+		return result;
+	}
+
+	/**
+	 * 修改电话和账号
+	 *
+	 * @param oldAdminAccount 原管理员账号
+	 * @param adminPhone      新管理员电话
+	 * @return 修改结果（受影响条数）
+	 */
+	@Override
+	public int modifyAccountAndPhone(String oldAdminAccount, String adminPhone) {
+		int result = adminMapper.updateAccountAndPhone(oldAdminAccount, adminPhone);
+		return result;
+	}
+
+	/**
+	 * 修改管理员密码
+	 *
+	 * @param adminAccount     管理员账号
+	 * @param oldAdminPassword 原管理员密码
+	 * @param adminPassword    新管理员密码
+	 * @return 修改结果（受影响条数）
+	 */
+	@Override
+	public int modifyPassword(String adminAccount, String oldAdminPassword, String adminPassword) {
+		int result = adminMapper.updatePassword(adminAccount, oldAdminPassword, adminPassword);
+		return result;
+	}
+
 
 }
