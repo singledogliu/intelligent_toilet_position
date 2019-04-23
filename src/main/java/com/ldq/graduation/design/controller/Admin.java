@@ -133,7 +133,6 @@ public class Admin {
 
 	/**
 	 * 管理员注册
-	 *
 	 * @param request 前端发来的数据
 	 * @return 注册结果
 	 */
@@ -150,8 +149,6 @@ public class Admin {
 		String adminPhone = request.getParameter("phone");
 //		管理员所负责区域名称
 		String regionalName = request.getParameter("regionalName");
-//		验证码
-//		String identifyingCode = request.getParameter("identifyingCode");
 		int checkedResult = checkAccount(adminAccount);
 		if (checkedResult == 0) {
 			int result = iAdminService.register(adminAccount, adminPassword, adminName, adminPhone, regionalName);

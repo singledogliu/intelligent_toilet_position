@@ -6,7 +6,7 @@
  */
 package com.ldq.graduation.design.services.impl;
 
-import com.ldq.graduation.design.dao.ToiletPositionMapper;
+import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
 import com.ldq.graduation.design.services.IToiletPositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Service
 public class ToiletPositionImpl implements IToiletPositionService {
 	@Autowired
-	private ToiletPositionMapper toiletPositionMapper;
+	private ToiletPositionUseMapper toiletPositionUseMapper;
 
 	/**
 	 * 插入一条新的厕位使用记录
@@ -32,7 +32,7 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	 */
 	@Override
 	public int insert(Timestamp StartTime, String ToiletPositionCode, String Gender, String ToiletCode, String RegionalName) {
-		int result = toiletPositionMapper.insert(StartTime,ToiletPositionCode,Gender,ToiletCode, RegionalName);
+		int result = toiletPositionUseMapper.insert(StartTime, ToiletPositionCode, Gender, ToiletCode, RegionalName);
 		return result;
 	}
 
@@ -48,7 +48,7 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	 */
 	@Override
 	public int update(String regionalName, String toiletCode, String gender, String toiletPositionCode, Timestamp endTime,Long duration) {
-		int result = toiletPositionMapper.update(regionalName,toiletCode,gender,toiletPositionCode,endTime,duration);
+		int result = toiletPositionUseMapper.update(regionalName, toiletCode, gender, toiletPositionCode, endTime, duration);
 		return result;
 	}
 
@@ -60,7 +60,7 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	 */
 	@Override
 	public int logout(String regionalName) {
-		int result = toiletPositionMapper.deleteByregionalName(regionalName);
+		int result = toiletPositionUseMapper.deleteByregionalName(regionalName);
 		return result;
 	}
 
@@ -75,7 +75,7 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	 */
 	@Override
 	public Timestamp getStartTime(String regionalName, String toiletCode, String gender, String toiletPositionCode) {
-		Timestamp startTime = toiletPositionMapper.selectStartTime(regionalName, toiletCode, gender, toiletPositionCode);
+		Timestamp startTime = toiletPositionUseMapper.selectStartTime(regionalName, toiletCode, gender, toiletPositionCode);
 		return startTime;
 	}
 

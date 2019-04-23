@@ -9,7 +9,7 @@ package com.ldq.graduation.design.services.impl;
 //@Repository("iToiletService")
 
 import com.ldq.graduation.design.dao.ToiletMapper;
-import com.ldq.graduation.design.dao.ToiletPositionMapper;
+import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
 import com.ldq.graduation.design.services.IToiletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ToiletImpl implements IToiletService {
 	@Autowired
 	ToiletMapper toiletMapper;
 	@Autowired
-	ToiletPositionMapper toiletPositionMapper;
+	ToiletPositionUseMapper toiletPositionUseMapper;
 
 	/**
 	 * 管理员注销
@@ -47,7 +47,7 @@ public class ToiletImpl implements IToiletService {
 	 */
 	@Override
 	public List<ToiletPositionInfo> getToiletStatistics(String regionalName, String toiletCode, String date) {
-		List<ToiletPositionInfo> toiletStatistics = toiletPositionMapper.selectAllByToiletCode(regionalName,toiletCode,date);
+		List<ToiletPositionInfo> toiletStatistics = toiletPositionUseMapper.selectAllByToiletCode(regionalName, toiletCode, date);
 		return toiletStatistics;
 	}
 }
