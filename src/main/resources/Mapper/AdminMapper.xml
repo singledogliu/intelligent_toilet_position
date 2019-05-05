@@ -29,10 +29,25 @@
         set admin_account = #{adminAccount},admin_name = #{adminName},password = #{adminPassword},phone_number = #{adminPhone}
         where admin_account = #{oldAdminAccount}
     </update>
-    <!--修改管理员账号和手机号码-->
-    <update id="updateAccountAndPhone">
+
+    <!--修改除账号以外的管理员信息-->
+    <update id="updateButAccount">
         update administrators
-        set admin_account = #{adminPhone},phone_number = #{adminPhone}
+        set admin_name = #{adminName},password = #{adminPassword},phone_number = #{adminPhone}
+        where admin_account = #{oldAdminAccount}
+    </update>
+
+    <!--修改手机号码-->
+    <update id="updatePhone">
+        update administrators
+        set phone_number = #{adminPhone}
+        where admin_account = #{oldAdminAccount}
+    </update>
+
+    <!--修改管理员账号-->
+    <update id="updateAccount">
+        update administrators
+        set admin_account = #{adminAccount}
         where admin_account = #{oldAdminAccount}
     </update>
 

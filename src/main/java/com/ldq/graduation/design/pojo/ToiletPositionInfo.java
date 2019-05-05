@@ -24,7 +24,7 @@ public class ToiletPositionInfo {
 	 */
 	private String toiletCode;
 	/**
-	 * 	 *厕位所在厕所的性别（男0/女1）
+	 * *厕位所在厕所的性别（男0/女1）
 	 */
 	private String gender;
 	/**
@@ -36,7 +36,7 @@ public class ToiletPositionInfo {
 	 */
 	private Timestamp startTime;
 	/**
-	 *厕位一次使用结束时间
+	 * 厕位一次使用结束时间
 	 */
 	private Timestamp endTime;
 	/**

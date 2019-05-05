@@ -125,7 +125,7 @@ public class Admin {
 			reason = "密码错误";
 			return reason;
 		} else {
-			reason = "登录成功";
+			reason = "登录成功," + adminInfo.getAdminName();
 			request.getSession().setAttribute("adminAccount", adminAccount);
 			return reason;
 		}
@@ -133,6 +133,7 @@ public class Admin {
 
 	/**
 	 * 管理员注册
+	 *
 	 * @param request 前端发来的数据
 	 * @return 注册结果
 	 */
@@ -188,25 +189,34 @@ public class Admin {
 //		管理员电话
 		String adminPhone = request.getParameter("phone");
 //		原管理员账号
-		String oldAdminAccount = (String) request.getSession().getAttribute("adminAccount");
+		String oldAdminAccount = request.getParameter("adminAccount");
 //		欲执行的操作
 		String action = request.getParameter("action");
+//		通过管理员账号查询到的记录
+		AdminInfo adminInfo = iAdminService.selectByaccount(oldAdminAccount);
 		int result = 0;
-		switch (action) {
-			case "修改电话":
-				result = iAdminService.modifyAccountAndPhone(oldAdminAccount, adminPhone);
-				if (result != 0) {
-					request.getSession().setAttribute("adminAccount", adminPhone);
-				}
-				break;
-			case "修改密码":
-				result = iAdminService.modifyPassword(oldAdminAccount, oldAdminPassword, adminPassword);
-				break;
-			case "修改全部":
-				result = iAdminService.modifyInformation(oldAdminAccount, adminAccount, adminName, adminPassword, adminPhone);
-				break;
-			default:
-				break;
+		if (!oldAdminPassword.equals(adminInfo.getAdminPassword())) {
+			result = 2;
+		} else {
+			switch (action) {
+				case "修改电话":
+					result = iAdminService.modifyPhone(oldAdminAccount, adminPhone);
+					if (result != 0) {
+						request.getSession().setAttribute("adminAccount", adminPhone);
+					}
+					break;
+				case "修改密码":
+					result = iAdminService.modifyPassword(oldAdminAccount, oldAdminPassword, adminPassword);
+					break;
+				case "修改账号":
+					result = iAdminService.modifyAccount(oldAdminAccount, adminAccount);
+					break;
+				case "修改全部":
+					result = iAdminService.modifyInformation(oldAdminAccount, adminAccount, adminName, adminPassword, adminPhone);
+					break;
+				default:
+					break;
+			}
 		}
 		return result;
 	}

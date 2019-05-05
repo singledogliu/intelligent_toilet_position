@@ -15,17 +15,19 @@ import java.util.List;
 public interface IToiletService {
 	/**
 	 * 管理员注销
-	 * @param regionalName		区域名称
-	 * @return					受影响的条数
+	 *
+	 * @param regionalName 区域名称
+	 * @return 受影响的条数
 	 */
 	int logout(String regionalName);
 
 	/**
 	 * 获取某个厕所指定时间段的所有使用数据
-	 * @param regionalName		区域名称
-	 * @param toiletCode		厕所代号
-	 * @param date				指定时间
-	 * @return					某个厕所指定时间段的所有使用数据
+	 *
+	 * @param regionalName 区域名称
+	 * @param toiletCode   厕所代号
+	 * @param date         指定时间
+	 * @return 某个厕所指定时间段的所有使用数据
 	 */
-	List<ToiletPositionInfo> getToiletStatistics(String regionalName,String toiletCode,String date);
+	List<ToiletPositionInfo> getToiletStatistics(String regionalName, String toiletCode, String date);
 }

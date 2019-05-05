@@ -15,16 +15,18 @@ public interface RegionalMapper {
 
 	/**
 	 * 增加一条区域记录
-	 * @param regionalName				区域名称
-	 * @param regionalResponsibleName	区域负责人名称
-	 * @return							受影响的条数
+	 *
+	 * @param regionalName            区域名称
+	 * @param regionalResponsibleName 区域负责人名称
+	 * @return 受影响的条数
 	 */
 	int insert(@Param("regionalName") String regionalName, @Param("regionalResponsibleName") String regionalResponsibleName);
 
 	/**
 	 * 通过区域代号删除一条记录
-	 * @param regionalName		区域名称
-	 * @return					受影响的条数
+	 *
+	 * @param regionalName 区域名称
+	 * @return 受影响的条数
 	 */
 	int deleteByregionalName(@Param("regionalName") String regionalName);
 }

@@ -24,13 +24,14 @@ public class RegionalImpl implements IRegionalService {
 
 	/**
 	 * 增加一条区域信息
+	 *
 	 * @param regionalName            区域名称
 	 * @param regionalResponsibleName 负责人姓名
 	 * @return 受影响的条数
 	 */
 	@Override
 	public int add(String regionalName, String regionalResponsibleName) {
-		int result = regionalMapper.insert(regionalName,regionalResponsibleName);
+		int result = regionalMapper.insert(regionalName, regionalResponsibleName);
 		return result;
 	}
 

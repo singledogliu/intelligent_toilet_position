@@ -14,8 +14,9 @@ public interface ToiletMapper {
 
 	/**
 	 * 通过区域名称删除一条记录
-	 * @param regionalName		区域名称
-	 * @return					受影响的条数
+	 *
+	 * @param regionalName 区域名称
+	 * @return 受影响的条数
 	 */
 	int deleteByregionalName(@Param("regionalName") String regionalName);
 }
