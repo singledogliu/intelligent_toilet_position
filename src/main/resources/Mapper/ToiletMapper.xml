@@ -2,8 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldq.graduation.design.dao.ToiletMapper">
 
+    <!--通过区域名称删除相关记录-->
     <delete id="deleteByregionalName">
         delete from toilet where regional_name = #{regionalName}
     </delete>
+
+    <!--插入厕所信息-->
+    <insert id="insert">
+        insert into toilet (toilet_code, regional_name, toilet_responsible_name)
+        values (#{toiletCode},#{regionalName},#{toiletResponsibleName})
+    </insert>
 
 </mapper>

@@ -12,6 +12,7 @@ import com.ldq.graduation.design.dao.ToiletMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
 import com.ldq.graduation.design.services.IToiletService;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,23 @@ public class ToiletImpl implements IToiletService {
 	public List<ToiletPositionInfo> getToiletStatistics(String regionalName, String toiletCode, String date) {
 		List<ToiletPositionInfo> toiletStatistics = toiletPositionUseMapper.selectAllByToiletCode(regionalName, toiletCode, date);
 		return toiletStatistics;
+	}
+
+	/**
+	 * 添加厕所信息
+	 *
+	 * @param regionalName
+	 * @param ToiletInfo
+	 * @return
+	 */
+	@Override
+	public int add(String regionalName, JSONArray ToiletInfo) {
+		int resultTotal = 0;
+		int result = 0;
+		for (int i = 0; i < ToiletInfo.size(); i++) {
+			result = toiletMapper.insert(regionalName, ToiletInfo.getJSONObject(i).getString("toiletCode"), ToiletInfo.getJSONObject(i).getString("responsibleName"));
+			resultTotal += result;
+		}
+		return resultTotal;
 	}
 }

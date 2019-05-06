@@ -7,6 +7,7 @@
 package com.ldq.graduation.design.services;
 
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -58,5 +59,16 @@ public interface IToiletPositionService {
 	 * @return 开始时间
 	 */
 	Timestamp getStartTime(String regionalName, String toiletCode, String gender, String toiletPositionCode);
+
+
+	/**
+	 * 添加厕位信息
+	 *
+	 * @param regionalName 区域名称
+	 * @param ToiletInfo   厕所信息
+	 * @return 添加结果
+	 */
+	int add(String regionalName, JSONArray ToiletInfo);
+
 }
 

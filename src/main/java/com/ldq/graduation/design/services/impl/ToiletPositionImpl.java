@@ -6,8 +6,10 @@
  */
 package com.ldq.graduation.design.services.impl;
 
+import com.ldq.graduation.design.dao.ToiletPositionMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
 import com.ldq.graduation.design.services.IToiletPositionService;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.sql.Timestamp;
 public class ToiletPositionImpl implements IToiletPositionService {
 	@Autowired
 	private ToiletPositionUseMapper toiletPositionUseMapper;
+	@Autowired
+	private ToiletPositionMapper toiletPositionMapper;
 
 	/**
 	 * 插入一条新的厕位使用记录
@@ -78,6 +82,34 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	public Timestamp getStartTime(String regionalName, String toiletCode, String gender, String toiletPositionCode) {
 		Timestamp startTime = toiletPositionUseMapper.selectStartTime(regionalName, toiletCode, gender, toiletPositionCode);
 		return startTime;
+	}
+
+	/**
+	 * 添加厕位信息
+	 *
+	 * @param regionalName 区域名称
+	 * @param ToiletInfo   厕所信息
+	 * @return 添加结果
+	 */
+	@Override
+	public int add(String regionalName, JSONArray ToiletInfo) {
+		int resultTotal = 0;
+		int result = 0;
+		String men = "男";
+		String women = "女";
+		for (int i = 0; i < ToiletInfo.size(); i++) {
+//			添加男性厕位数据
+			for (int j = 0; j < ToiletInfo.getJSONObject(i).getInt("menToiletPositionCounter"); j++) {
+				result = toiletPositionMapper.insert(regionalName, ToiletInfo.getJSONObject(i).getString("toiletCode"), men, j + 1);
+				resultTotal += result;
+			}
+//			添加女性厕位数据
+			for (int k = 0; k < ToiletInfo.getJSONObject(i).getInt("womenToiletPositionCounter"); k++) {
+				result = toiletPositionMapper.insert(regionalName, ToiletInfo.getJSONObject(i).getString("toiletCode"), women, k + 1);
+				resultTotal += result;
+			}
+		}
+		return resultTotal;
 	}
 
 

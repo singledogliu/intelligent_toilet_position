@@ -20,6 +20,9 @@ import com.ldq.graduation.design.services.IAdminService;
 import com.ldq.graduation.design.services.IRegionalService;
 import com.ldq.graduation.design.services.IToiletPositionService;
 import com.ldq.graduation.design.services.IToiletService;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
+//import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -230,7 +233,7 @@ public class Admin {
 	@RequestMapping("/logout")
 	@ResponseBody
 	public String logout(HttpServletRequest request) {
-		String adminAccount = (String) request.getSession().getAttribute("adminAccount");
+		String adminAccount = request.getParameter("adminAccount");
 		AdminInfo adminInfo = iAdminService.selectByaccount(adminAccount);
 		String regionalName = adminInfo.getRegionalName();
 		int resultAdmin = iAdminService.logout(adminAccount);
@@ -262,7 +265,6 @@ public class Admin {
 
 	/**
 	 * 获取某个厕所指定时间段的所有使用数据
-	 *
 	 * @param request 前端发来的数据
 	 * @return 某个厕所指定时间段内的所有厕位使用数据
 	 */
@@ -277,4 +279,26 @@ public class Admin {
 		return toiletStatistics;
 	}
 
+	/**
+	 * 添加厕所及厕位信息
+	 *
+	 * @param request 前端发来的数据
+	 * @return 添加结果
+	 */
+	@RequestMapping("/AddToiletInfo")
+	@ResponseBody
+	public int AddToiletInfo(HttpServletRequest request) {
+		String adminAccount = request.getParameter("adminAccount");
+		String ToiletInfoStr = request.getParameter("toiletInfo");
+		//		通过管理员账号查询到的记录
+		AdminInfo adminInfo = iAdminService.selectByaccount(adminAccount);
+//		区域名称
+		String regionalName = adminInfo.getRegionalName();
+		JSONArray ToiletInfo = JSONArray.fromObject(ToiletInfoStr);
+//		添加厕所信息
+		int resultToilet = iToiletService.add(regionalName, ToiletInfo);
+//		添加厕位信息
+		int resultToiletPosition = iToiletPositionService.add(regionalName, ToiletInfo);
+		return resultToilet + resultToiletPosition;
+	}
 }
