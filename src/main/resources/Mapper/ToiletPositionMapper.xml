@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldq.graduation.design.dao.ToiletPositionMapper">
+
+    <resultMap id="ToiletPositionInfo" type="ToiletPositionInfo">
+        <result property="regionalName" column="regional_name"></result>
+        <result property="toiletCode" column="toilet_code"></result>
+        <result property="gender" column="gender"></result>
+        <result property="toiletPositionCode" column="toilet_position_code"></result>
+    </resultMap>
+
     <!--插入数据-->
     <insert id="insert">
         insert into toilet_position
@@ -8,4 +16,13 @@
          values
          (#{toiletPositionCode},#{gender},#{toiletCode},#{regionalName})
     </insert>
+
+    <!--查询指定区域指定厕所的所有厕位信息-->
+    <select id="select" resultMap="ToiletPositionInfo">
+      select * from toilet_position
+      where regional_name = #{regionalName}
+      and  toilet_code = #{toiletCode}
+      order by toilet_position_code
+    </select>
+
 </mapper>

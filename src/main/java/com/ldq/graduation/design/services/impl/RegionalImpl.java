@@ -8,7 +8,7 @@ package com.ldq.graduation.design.services.impl;
 
 import com.ldq.graduation.design.dao.RegionalMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
-import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import com.ldq.graduation.design.services.IRegionalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,8 +55,8 @@ public class RegionalImpl implements IRegionalService {
 	 * @return 所有厕位使用数据
 	 */
 	@Override
-	public List<ToiletPositionInfo> getRegionalStatistics(String regionalName, String date) {
-		List<ToiletPositionInfo> regionalStatistics = toiletPositionUseMapper.selectAllByRegionalName(regionalName, date);
+	public List<ToiletPositionUseInfo> getRegionalStatistics(String regionalName, String date) {
+		List<ToiletPositionUseInfo> regionalStatistics = toiletPositionUseMapper.selectAllByRegionalName(regionalName, date);
 		return regionalStatistics;
 	}
 }

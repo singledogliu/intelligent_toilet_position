@@ -67,7 +67,6 @@ public class Update {
 //		区域代号
 		String regionalName = request.getParameter("regionalName");
 		Timestamp startTime = iToiletPositionService.getStartTime(regionalName, toiletCode, gender, toiletPositionCode);
-//		System.out.println(startTime);
 		Long duration = endTime.getTime() - startTime.getTime();
 		int resultNum = iToiletPositionService.update(regionalName, toiletCode, gender, toiletPositionCode, endTime, duration);
 		GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");

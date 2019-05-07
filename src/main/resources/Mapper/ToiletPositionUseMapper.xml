@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldq.graduation.design.dao.ToiletPositionUseMapper">
-    <resultMap id="ToiletPositionInfo" type="ToiletPositionInfo">
+    <resultMap id="ToiletPositionInfo" type="toiletPositionUseInfo">
         <result property="regionalName" column="regional_name"></result>
         <result property="toiletCode" column="toilet_code"></result>
         <result property="gender" column="gender"></result>
@@ -13,12 +13,12 @@
 
     <!--插入一条使用数据-->
     <insert id="insert">
-          insert into toilet_position (toilet_position_code, start_time,gender, toilet_code, regional_name)
+          insert into toilet_position_use (toilet_position_code, start_time,gender, toilet_code, regional_name)
           values (#{toiletPositionCode},#{startTime},#{gender},#{toiletCode},#{regionalName})
     </insert>
     <!--更新厕位使用数据（结束时间）-->
     <update id="update">
-      update toilet_position
+      update toilet_position_use
       set end_time = #{endTime},duration = #{duration}
       where regional_name = #{regionalName}
         and toilet_code = #{toiletCode}
@@ -28,7 +28,7 @@
     </update>
     <!--查找开始时间-->
     <select id="selectStartTime" resultType="java.sql.Timestamp">
-        select start_time from toilet_position
+        select start_time from toilet_position_use
         where regional_name = #{regionalName}
         and toilet_code = #{toiletCode}
         and gender = #{gender}
@@ -38,14 +38,14 @@
     </select>
     <!--通过区域名称查询改区域指定时间段内的所有厕位使用数据-->
     <select id="selectAllByRegionalName" resultMap="ToiletPositionInfo">
-        select * from toilet_position
+        select * from toilet_position_use
         where regional_name = #{regionalName}
         and start_time like #{date}
         and end_time is not null
     </select>
     <!--查询某厕所指定时间段的所有使用数据-->
     <select id="selectAllByToiletCode" resultMap="ToiletPositionInfo">
-        select * from toilet_position
+        select * from toilet_position_use
         where regional_name = #{regionalName}
         and toilet_code = #{toiletCode}
         and start_time like #{date}
@@ -53,6 +53,6 @@
     </select>
     <!--通过区域名称删除记录-->
     <delete id="deleteByregionalName">
-        delete from toilet_position where regional_name = #{regionalName}
+        delete from toilet_position_use where regional_name = #{regionalName}
     </delete>
 </mapper>

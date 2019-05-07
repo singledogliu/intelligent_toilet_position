@@ -6,9 +6,8 @@
  */
 package com.ldq.graduation.design.services;
 
-import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import net.sf.json.JSONArray;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public interface IToiletService {
 	 * @param date         指定时间
 	 * @return 某个厕所指定时间段的所有使用数据
 	 */
-	List<ToiletPositionInfo> getToiletStatistics(String regionalName, String toiletCode, String date);
+	List<ToiletPositionUseInfo> getToiletStatistics(String regionalName, String toiletCode, String date);
 
 	/**
 	 * 添加厕所信息

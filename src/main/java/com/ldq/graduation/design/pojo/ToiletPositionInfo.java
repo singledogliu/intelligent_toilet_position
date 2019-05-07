@@ -2,16 +2,11 @@
  * 厕位信息
  *
  * @author ldq
- * @date 2019-03-25 12:26
+ * @date 2019-05-06 22:24
  */
 package com.ldq.graduation.design.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.sql.Timestamp;
-import java.util.Date;
 
 @Data
 public class ToiletPositionInfo {
@@ -31,16 +26,4 @@ public class ToiletPositionInfo {
 	 * 厕位代号
 	 */
 	private String toiletPositionCode;
-	/**
-	 * 厕位一次使用开始时间
-	 */
-	private Timestamp startTime;
-	/**
-	 * 厕位一次使用结束时间
-	 */
-	private Timestamp endTime;
-	/**
-	 * 使用时长
-	 */
-	private int duration;
 }

@@ -8,11 +8,9 @@ package com.ldq.graduation.design.services;
 
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
 import net.sf.json.JSONArray;
-import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
 
 
 public interface IToiletPositionService {
@@ -70,5 +68,13 @@ public interface IToiletPositionService {
 	 */
 	int add(String regionalName, JSONArray ToiletInfo);
 
+	/**
+	 * 获取指定厕所的厕位信息
+	 *
+	 * @param regionalName 区域名称
+	 * @param toiletCode   厕所代号
+	 * @return 厕位信息
+	 */
+	List<ToiletPositionInfo> getToiletPositionInfo(String regionalName, String toiletCode);
 }
 

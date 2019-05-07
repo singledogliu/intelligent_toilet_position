@@ -7,7 +7,7 @@
 package com.ldq.graduation.design.dao;
 
 
-import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -70,7 +70,7 @@ public interface ToiletPositionUseMapper {
 	 * @param date         时间段
 	 * @return 所有数据
 	 */
-	List<ToiletPositionInfo> selectAllByRegionalName(@Param("regionalName") String regionalName, @Param("date") String date);
+	List<ToiletPositionUseInfo> selectAllByRegionalName(@Param("regionalName") String regionalName, @Param("date") String date);
 
 	/**
 	 * 查询某厕所指定时间段的所有使用数据
@@ -80,7 +80,7 @@ public interface ToiletPositionUseMapper {
 	 * @param date         指定时间
 	 * @return 某厕所指定时间段的所有使用数据
 	 */
-	List<ToiletPositionInfo> selectAllByToiletCode(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("date") String date);
+	List<ToiletPositionUseInfo> selectAllByToiletCode(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("date") String date);
 
 }
 

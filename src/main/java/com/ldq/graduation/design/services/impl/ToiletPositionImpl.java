@@ -8,6 +8,7 @@ package com.ldq.graduation.design.services.impl;
 
 import com.ldq.graduation.design.dao.ToiletPositionMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
+import com.ldq.graduation.design.pojo.ToiletPositionInfo;
 import com.ldq.graduation.design.services.IToiletPositionService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Service
@@ -110,6 +112,19 @@ public class ToiletPositionImpl implements IToiletPositionService {
 			}
 		}
 		return resultTotal;
+	}
+
+	/**
+	 * 获取指定厕所的厕位信息
+	 *
+	 * @param regionalName 区域名称
+	 * @param toiletCode   厕所代号
+	 * @return 厕位信息
+	 */
+	@Override
+	public List<ToiletPositionInfo> getToiletPositionInfo(String regionalName, String toiletCode) {
+		List<ToiletPositionInfo> toiletPositionInfos = toiletPositionMapper.select(regionalName, toiletCode);
+		return toiletPositionInfos;
 	}
 
 

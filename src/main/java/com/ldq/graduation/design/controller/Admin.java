@@ -16,11 +16,11 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.ldq.graduation.design.pojo.AdminInfo;
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import com.ldq.graduation.design.services.IAdminService;
 import com.ldq.graduation.design.services.IRegionalService;
 import com.ldq.graduation.design.services.IToiletPositionService;
 import com.ldq.graduation.design.services.IToiletService;
-import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
 //import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -259,7 +259,7 @@ public class Admin {
 		String regionalName = request.getParameter("regionalName");
 		String date = request.getParameter("date");
 		date = date + "%";
-		List<ToiletPositionInfo> regionalStatistics = iRegionalService.getRegionalStatistics(regionalName, date);
+		List<ToiletPositionUseInfo> regionalStatistics = iRegionalService.getRegionalStatistics(regionalName, date);
 		return regionalStatistics;
 	}
 
@@ -275,7 +275,7 @@ public class Admin {
 		String toiletCode = request.getParameter("toiletCode");
 		String date = request.getParameter("date");
 		date = date + "%";
-		List<ToiletPositionInfo> toiletStatistics = iToiletService.getToiletStatistics(regionalName, toiletCode, date);
+		List<ToiletPositionUseInfo> toiletStatistics = iToiletService.getToiletStatistics(regionalName, toiletCode, date);
 		return toiletStatistics;
 	}
 
@@ -300,5 +300,23 @@ public class Admin {
 //		添加厕位信息
 		int resultToiletPosition = iToiletPositionService.add(regionalName, ToiletInfo);
 		return resultToilet + resultToiletPosition;
+	}
+
+	/**
+	 * 获取指定厕所的厕位信息
+	 *
+	 * @param request 前端发来的数据
+	 * @return 查询到的数据
+	 */
+	@RequestMapping("/getToiletPositionInfo")
+	@ResponseBody
+	public List getToiletPositionInfo(HttpServletRequest request) {
+//		区域名称
+		String regionalName = request.getParameter("regionalName");
+		//		厕所代号
+		String toiletCode = request.getParameter("toiletCode");
+		List<ToiletPositionInfo> toiletPositionInfos = iToiletPositionService.getToiletPositionInfo(regionalName, toiletCode);
+		System.out.println(toiletPositionInfos.toString());
+		return toiletPositionInfos;
 	}
 }

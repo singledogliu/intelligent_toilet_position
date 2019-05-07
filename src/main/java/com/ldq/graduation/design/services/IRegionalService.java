@@ -6,9 +6,7 @@
  */
 package com.ldq.graduation.design.services;
 
-import com.ldq.graduation.design.pojo.RegionalInfo;
-import com.ldq.graduation.design.pojo.ToiletPositionInfo;
-import org.springframework.stereotype.Service;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 
 import java.util.List;
 
@@ -39,5 +37,5 @@ public interface IRegionalService {
 	 * @param date         时间段
 	 * @return 所有厕位使用数据
 	 */
-	List<ToiletPositionInfo> getRegionalStatistics(String regionalName, String date);
+	List<ToiletPositionUseInfo> getRegionalStatistics(String regionalName, String date);
 }

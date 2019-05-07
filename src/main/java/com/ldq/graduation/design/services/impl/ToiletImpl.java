@@ -10,7 +10,7 @@ package com.ldq.graduation.design.services.impl;
 
 import com.ldq.graduation.design.dao.ToiletMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
-import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import com.ldq.graduation.design.services.IToiletService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +47,8 @@ public class ToiletImpl implements IToiletService {
 	 * @return 某个厕所指定时间段的所有使用数据
 	 */
 	@Override
-	public List<ToiletPositionInfo> getToiletStatistics(String regionalName, String toiletCode, String date) {
-		List<ToiletPositionInfo> toiletStatistics = toiletPositionUseMapper.selectAllByToiletCode(regionalName, toiletCode, date);
+	public List<ToiletPositionUseInfo> getToiletStatistics(String regionalName, String toiletCode, String date) {
+		List<ToiletPositionUseInfo> toiletStatistics = toiletPositionUseMapper.selectAllByToiletCode(regionalName, toiletCode, date);
 		return toiletStatistics;
 	}
 
