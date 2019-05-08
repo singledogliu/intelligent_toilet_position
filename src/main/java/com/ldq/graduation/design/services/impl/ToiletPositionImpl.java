@@ -51,11 +51,12 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	 * @param toiletPositionCode 厕位编号
 	 * @param endTime            结束使用时间
 	 * @param duration           使用时长
+	 * @param duration             开始使用时间
 	 * @return 受影响的条数
 	 */
 	@Override
-	public int update(String regionalName, String toiletCode, String gender, String toiletPositionCode, Timestamp endTime, Long duration) {
-		int result = toiletPositionUseMapper.update(regionalName, toiletCode, gender, toiletPositionCode, endTime, duration);
+	public int update(String regionalName, String toiletCode, String gender, String toiletPositionCode, Timestamp endTime, Timestamp startTime, Long duration) {
+		int result = toiletPositionUseMapper.update(regionalName, toiletCode, gender, toiletPositionCode, endTime, startTime, duration);
 		return result;
 	}
 

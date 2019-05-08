@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -36,14 +37,31 @@ public class Update {
 	@ResponseBody
 	public int insert(HttpServletRequest request) {
 		Date currentDate = new Date();
+		DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//		开始时间的字符串
+		String startTimeStr = request.getParameter("startTimeStr");
+//		格式化字符串
+		try {
+			currentDate = sdf.parse(startTimeStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+//		开始时间
 		Timestamp startTime = new Timestamp(currentDate.getTime());
+//		厕位编号
 		String toiletPositionCode = request.getParameter("toiletPositionCode");
+//		性别
 		String gender = request.getParameter("gender");
+//		厕所代号（名称）
 		String toiletCode = request.getParameter("toiletCode");
+//		区域名称
 		String regionalName = request.getParameter("regionalName");
 		int resultNum = iToiletPositionService.insert(startTime, toiletPositionCode, gender, toiletCode, regionalName);
-		GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");
-		goEasy.publish("action", "start");
+//		向前端发送数据
+		if (resultNum != 0) {
+			GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");
+			goEasy.publish("action", "start");
+		}
 		return resultNum;
 	}
 
@@ -57,6 +75,25 @@ public class Update {
 	@ResponseBody
 	public int update(HttpServletRequest request) {
 		Date currentDate = new Date();
+		DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//		开始时间的字符串
+		String startTimeStr = request.getParameter("startTimeStr");
+//		结束时间的字符串
+		String endTimeStr = request.getParameter("endTimeStr");
+//		格式化字符串
+		try {
+			currentDate = sdf.parse(startTimeStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+//		开始时间
+		Timestamp startTime = new Timestamp(currentDate.getTime());
+		try {
+			currentDate = sdf.parse(endTimeStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+//		结束时间
 		Timestamp endTime = new Timestamp(currentDate.getTime());
 //		厕位编号
 		String toiletPositionCode = request.getParameter("toiletPositionCode");
@@ -66,11 +103,14 @@ public class Update {
 		String toiletCode = request.getParameter("toiletCode");
 //		区域代号
 		String regionalName = request.getParameter("regionalName");
-		Timestamp startTime = iToiletPositionService.getStartTime(regionalName, toiletCode, gender, toiletPositionCode);
+//		使用时长
 		Long duration = endTime.getTime() - startTime.getTime();
-		int resultNum = iToiletPositionService.update(regionalName, toiletCode, gender, toiletPositionCode, endTime, duration);
-		GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");
-		goEasy.publish("action", "end");
+		int resultNum = iToiletPositionService.update(regionalName, toiletCode, gender, toiletPositionCode, endTime, startTime, duration);
+//		向前端发送数据
+		if (resultNum != 0) {
+			GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");
+			goEasy.publish("action", "end");
+		}
 		return resultNum;
 	}
 }

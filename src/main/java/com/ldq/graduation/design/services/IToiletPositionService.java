@@ -35,9 +35,11 @@ public interface IToiletPositionService {
 	 * @param gender             性别
 	 * @param toiletPositionCode 厕位编号
 	 * @param endTime            结束使用时间
+	 * @param startTime             开始使用时间
+	 * @param duration             使用时长
 	 * @return 受影响的条数
 	 */
-	int update(String regionalName, String toiletCode, String gender, String toiletPositionCode, Timestamp endTime, Long duration);
+	int update(String regionalName, String toiletCode, String gender, String toiletPositionCode, Timestamp endTime, Timestamp startTime, Long duration);
 
 	/**
 	 * 管理员注销

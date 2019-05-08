@@ -21,21 +21,21 @@
       update toilet_position_use
       set end_time = #{endTime},duration = #{duration}
       where regional_name = #{regionalName}
+        and start_time = #{startTime}
         and toilet_code = #{toiletCode}
         and gender = #{gender}
         and toilet_position_code = #{toiletPositionCode}
-        and end_time is null
     </update>
-    <!--查找开始时间-->
-    <select id="selectStartTime" resultType="java.sql.Timestamp">
-        select start_time from toilet_position_use
-        where regional_name = #{regionalName}
-        and toilet_code = #{toiletCode}
-        and gender = #{gender}
-        and toilet_position_code = #{toiletPositionCode}
-        and duration = 0
-        and end_time is null
-    </select>
+    <!--&lt;!&ndash;查找开始时间&ndash;&gt;-->
+    <!--<select id="selectStartTime" resultType="java.sql.Timestamp">-->
+    <!--select start_time from toilet_position_use-->
+    <!--where regional_name = #{regionalName}-->
+    <!--and toilet_code = #{toiletCode}-->
+    <!--and gender = #{gender}-->
+    <!--and toilet_position_code = #{toiletPositionCode}-->
+    <!--and duration = 0-->
+    <!--and end_time is null-->
+    <!--</select>-->
     <!--通过区域名称查询改区域指定时间段内的所有厕位使用数据-->
     <select id="selectAllByRegionalName" resultMap="ToiletPositionInfo">
         select * from toilet_position_use

@@ -39,10 +39,11 @@ public interface ToiletPositionUseMapper {
 	 * @param gender             性别
 	 * @param toiletPositionCode 厕位代号
 	 * @param endTime            结束时间
+	 * @param startTime             开始时间
 	 * @param duration           使用时长
 	 * @return 受影响条数
 	 */
-	int update(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("gender") String gender, @Param("toiletPositionCode") String toiletPositionCode, @Param("endTime") Timestamp endTime, @Param("duration") Long duration);
+	int update(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("gender") String gender, @Param("toiletPositionCode") String toiletPositionCode, @Param("endTime") Timestamp endTime, @Param("startTime") Timestamp startTime, @Param("duration") Long duration);
 
 	/**
 	 * 通过区域名称删除一条记录
