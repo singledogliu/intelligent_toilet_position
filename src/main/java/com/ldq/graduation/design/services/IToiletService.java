@@ -6,6 +6,7 @@
  */
 package com.ldq.graduation.design.services;
 
+import com.ldq.graduation.design.pojo.ToiletInfo;
 import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import net.sf.json.JSONArray;
 
@@ -39,6 +40,14 @@ public interface IToiletService {
 	 * @return
 	 */
 	int add(String regionalName, JSONArray ToiletInfo);
+
+	/**
+	 * 获取指定管理员负责的厕所信息
+	 *
+	 * @param regionalName 管理员账号
+	 * @return 查询到的数据
+	 */
+	List<ToiletInfo> getToiletInfo(String regionalName);
 
 }
 

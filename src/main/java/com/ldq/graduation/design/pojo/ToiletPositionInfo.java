@@ -19,7 +19,7 @@ public class ToiletPositionInfo {
 	 */
 	private String toiletCode;
 	/**
-	 * *厕位所在厕所的性别（男0/女1）
+	 * *厕位所在厕所的性别
 	 */
 	private String gender;
 	/**

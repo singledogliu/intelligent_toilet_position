@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldq.graduation.design.dao.ToiletMapper">
 
+    <resultMap id="ToiletInfo" type="ToiletInfo">
+        <result property="regionalName" column="regional_name"></result>
+        <result property="toiletCode" column="toilet_code"></result>
+        <result property="toiletResponsibleName" column="toilet_responsible_name"></result>
+    </resultMap>
+
     <!--通过区域名称删除相关记录-->
     <delete id="deleteByregionalName">
         delete from toilet where regional_name = #{regionalName}
@@ -12,5 +18,9 @@
         insert into toilet (toilet_code, regional_name, toilet_responsible_name)
         values (#{toiletCode},#{regionalName},#{toiletResponsibleName})
     </insert>
+    <!--获取指定管理员赋值的厕所信息-->
+    <select id="selectByAccount" resultMap="ToiletInfo">
+        select * from toilet where regional_name = #{regionalName}
+    </select>
 
 </mapper>

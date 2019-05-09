@@ -10,6 +10,7 @@ package com.ldq.graduation.design.services.impl;
 
 import com.ldq.graduation.design.dao.ToiletMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
+import com.ldq.graduation.design.pojo.ToiletInfo;
 import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import com.ldq.graduation.design.services.IToiletService;
 import net.sf.json.JSONArray;
@@ -68,5 +69,17 @@ public class ToiletImpl implements IToiletService {
 			resultTotal += result;
 		}
 		return resultTotal;
+	}
+
+	/**
+	 * 获取指定管理员负责的厕所信息
+	 *
+	 * @param regionalName 管理员账号
+	 * @return 查询到的数据
+	 */
+	@Override
+	public List<ToiletInfo> getToiletInfo(String regionalName) {
+		List<ToiletInfo> toiletInfos = toiletMapper.selectByAccount(regionalName);
+		return toiletInfos;
 	}
 }

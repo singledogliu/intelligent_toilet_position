@@ -8,6 +8,7 @@ package com.ldq.graduation.design.controller;
 
 import com.ldq.graduation.design.services.IToiletPositionService;
 import io.goeasy.GoEasy;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,8 +60,15 @@ public class Update {
 		int resultNum = iToiletPositionService.insert(startTime, toiletPositionCode, gender, toiletCode, regionalName);
 //		向前端发送数据
 		if (resultNum != 0) {
+			JSONObject message = new JSONObject();
+			message.put("action", "start");
+			message.put("startTime", startTimeStr);
+			message.put("regionalName", regionalName);
+			message.put("toiletCode", toiletCode);
+			message.put("gender", gender);
+			message.put("toiletPositionCode", toiletPositionCode);
 			GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");
-			goEasy.publish("action", "start");
+			goEasy.publish("message", String.valueOf(message));
 		}
 		return resultNum;
 	}
@@ -108,8 +116,15 @@ public class Update {
 		int resultNum = iToiletPositionService.update(regionalName, toiletCode, gender, toiletPositionCode, endTime, startTime, duration);
 //		向前端发送数据
 		if (resultNum != 0) {
+			JSONObject message = new JSONObject();
+			message.put("action", "end");
+			message.put("startTime", endTimeStr);
+			message.put("regionalName", regionalName);
+			message.put("toiletCode", toiletCode);
+			message.put("gender", gender);
+			message.put("toiletPositionCode", toiletPositionCode);
 			GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");
-			goEasy.publish("action", "end");
+			goEasy.publish("message", String.valueOf(message));
 		}
 		return resultNum;
 	}

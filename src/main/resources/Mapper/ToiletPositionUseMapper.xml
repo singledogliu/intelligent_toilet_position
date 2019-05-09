@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ldq.graduation.design.dao.ToiletPositionUseMapper">
-    <resultMap id="ToiletPositionInfo" type="toiletPositionUseInfo">
+    <resultMap id="ToiletPositionUseInfo" type="toiletPositionUseInfo">
         <result property="regionalName" column="regional_name"></result>
         <result property="toiletCode" column="toilet_code"></result>
         <result property="gender" column="gender"></result>
@@ -10,12 +10,19 @@
         <result property="endTime" column="end_time"></result>
         <result property="duration" column="duration"></result>
     </resultMap>
+    <resultMap id="ToiletPositionInfoMapper" type="toiletPositionInfo">
+        <result property="regionalName" column="regional_name"></result>
+        <result property="toiletCode" column="toilet_code"></result>
+        <result property="gender" column="gender"></result>
+        <result property="toiletPositionCode" column="toilet_position_code"></result>
+    </resultMap>
 
     <!--插入一条使用数据-->
     <insert id="insert">
           insert into toilet_position_use (toilet_position_code, start_time,gender, toilet_code, regional_name)
           values (#{toiletPositionCode},#{startTime},#{gender},#{toiletCode},#{regionalName})
     </insert>
+
     <!--更新厕位使用数据（结束时间）-->
     <update id="update">
       update toilet_position_use
@@ -26,25 +33,49 @@
         and gender = #{gender}
         and toilet_position_code = #{toiletPositionCode}
     </update>
-    <!--&lt;!&ndash;查找开始时间&ndash;&gt;-->
-    <!--<select id="selectStartTime" resultType="java.sql.Timestamp">-->
-    <!--select start_time from toilet_position_use-->
-    <!--where regional_name = #{regionalName}-->
-    <!--and toilet_code = #{toiletCode}-->
-    <!--and gender = #{gender}-->
-    <!--and toilet_position_code = #{toiletPositionCode}-->
-    <!--and duration = 0-->
-    <!--and end_time is null-->
-    <!--</select>-->
+
+    <!--获取指定厕所已有的使用信息（每个厕位一条）-->
+    <select id="selectExistsInfo" resultMap="ToiletPositionInfoMapper">
+        select distinct regional_name, toilet_code, gender, toilet_position_code
+        FROM toilet_position_use
+        where regional_name = #{regionalName}
+        and toilet_code = #{toiletCode}
+    </select>
+
+    <!--查询某个厕位最新的一条数据-->
+    <select id="selectCurrentUseInfo" resultMap="ToiletPositionUseInfo">
+        SELECT
+	*
+FROM
+	toilet_position_use
+WHERE
+	regional_name = #{regionalName}
+	AND toilet_code = #{toiletCode}
+	AND gender = #{gender}
+	AND toilet_position_code = #{toiletPositionCode}
+	AND start_time = #{startTime}
+    </select>
+
+    <!--查询某个厕位最新的开始时间-->
+    <select id="selectMaxTime" resultType="java.sql.Timestamp">
+    SELECT MAX( start_time )
+	FROM  toilet_position_use
+	where regional_name = #{regionalName}
+	and toilet_code = #{toiletCode}
+	and gender = #{gender}
+	and toilet_position_code = #{toiletPositionCode}
+    </select>
+
     <!--通过区域名称查询改区域指定时间段内的所有厕位使用数据-->
-    <select id="selectAllByRegionalName" resultMap="ToiletPositionInfo">
+    <select id="selectAllByRegionalName" resultMap="ToiletPositionUseInfo">
         select * from toilet_position_use
         where regional_name = #{regionalName}
         and start_time like #{date}
         and end_time is not null
     </select>
+
     <!--查询某厕所指定时间段的所有使用数据-->
-    <select id="selectAllByToiletCode" resultMap="ToiletPositionInfo">
+    <select id="selectAllByToiletCode" resultMap="ToiletPositionUseInfo">
         select * from toilet_position_use
         where regional_name = #{regionalName}
         and toilet_code = #{toiletCode}

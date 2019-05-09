@@ -7,6 +7,7 @@
 package com.ldq.graduation.design.services;
 
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import net.sf.json.JSONArray;
 
 import java.sql.Timestamp;
@@ -49,17 +50,6 @@ public interface IToiletPositionService {
 	 */
 	int logout(String regionalName);
 
-	/**
-	 * 获取开始时间
-	 *
-	 * @param regionalName       区域名称
-	 * @param toiletCode         厕所代号
-	 * @param gender             性别
-	 * @param toiletPositionCode 厕位编号
-	 * @return 开始时间
-	 */
-	Timestamp getStartTime(String regionalName, String toiletCode, String gender, String toiletPositionCode);
-
 
 	/**
 	 * 添加厕位信息
@@ -72,11 +62,20 @@ public interface IToiletPositionService {
 
 	/**
 	 * 获取指定厕所的厕位信息
-	 *
 	 * @param regionalName 区域名称
 	 * @param toiletCode   厕所代号
 	 * @return 厕位信息
 	 */
 	List<ToiletPositionInfo> getToiletPositionInfo(String regionalName, String toiletCode);
+
+	/**
+	 * 查询指定厕所当前的厕位使用情况
+	 *
+	 * @param regionalName 区域名称
+	 * @param toiletCode   厕所代号
+	 * @return 查询到的数据
+	 */
+	List<ToiletPositionUseInfo> getCurrentUseInfo(String regionalName, String toiletCode);
+
 }
 

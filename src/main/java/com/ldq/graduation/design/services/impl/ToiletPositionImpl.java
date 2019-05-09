@@ -9,13 +9,14 @@ package com.ldq.graduation.design.services.impl;
 import com.ldq.graduation.design.dao.ToiletPositionMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
+import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import com.ldq.graduation.design.services.IToiletPositionService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,7 +52,7 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	 * @param toiletPositionCode 厕位编号
 	 * @param endTime            结束使用时间
 	 * @param duration           使用时长
-	 * @param duration             开始使用时间
+	 * @param duration           开始使用时间
 	 * @return 受影响的条数
 	 */
 	@Override
@@ -70,21 +71,6 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	public int logout(String regionalName) {
 		int result = toiletPositionUseMapper.deleteByregionalName(regionalName);
 		return result;
-	}
-
-	/**
-	 * 获取开始时间
-	 *
-	 * @param regionalName       区域名称
-	 * @param toiletCode         厕所代号
-	 * @param gender             性别
-	 * @param toiletPositionCode 厕位编号
-	 * @return 开始时间
-	 */
-	@Override
-	public Timestamp getStartTime(String regionalName, String toiletCode, String gender, String toiletPositionCode) {
-		Timestamp startTime = toiletPositionUseMapper.selectStartTime(regionalName, toiletCode, gender, toiletPositionCode);
-		return startTime;
 	}
 
 	/**
@@ -126,6 +112,25 @@ public class ToiletPositionImpl implements IToiletPositionService {
 	public List<ToiletPositionInfo> getToiletPositionInfo(String regionalName, String toiletCode) {
 		List<ToiletPositionInfo> toiletPositionInfos = toiletPositionMapper.select(regionalName, toiletCode);
 		return toiletPositionInfos;
+	}
+
+	/**
+	 * 查询指定厕所当前的厕位使用情况
+	 *
+	 * @param regionalName 区域名称
+	 * @param toiletCode   厕所代号
+	 * @return 查询到的数据
+	 */
+	@Override
+	public List<ToiletPositionUseInfo> getCurrentUseInfo(String regionalName, String toiletCode) {
+		List<ToiletPositionInfo> toiletPositionInfos = toiletPositionUseMapper.selectExistsInfo(regionalName, toiletCode);
+		List<ToiletPositionUseInfo> toiletPositionUseInfos = new ArrayList<ToiletPositionUseInfo>();
+		for (int i = 0; i < toiletPositionInfos.size(); i++) {
+			Timestamp theMaxTime = toiletPositionUseMapper.selectMaxTime(regionalName, toiletCode, toiletPositionInfos.get(i).getGender(), toiletPositionInfos.get(i).getToiletPositionCode());
+			ToiletPositionUseInfo toiletPositionUseInfo = toiletPositionUseMapper.selectCurrentUseInfo(regionalName, toiletCode, toiletPositionInfos.get(i).getGender(), toiletPositionInfos.get(i).getToiletPositionCode(), theMaxTime);
+			toiletPositionUseInfos.add(toiletPositionUseInfo);
+		}
+		return toiletPositionUseInfos;
 	}
 
 

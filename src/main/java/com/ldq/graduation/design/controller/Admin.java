@@ -15,6 +15,7 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.ldq.graduation.design.pojo.AdminInfo;
+import com.ldq.graduation.design.pojo.ToiletInfo;
 import com.ldq.graduation.design.pojo.ToiletPositionInfo;
 import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import com.ldq.graduation.design.services.IAdminService;
@@ -22,7 +23,7 @@ import com.ldq.graduation.design.services.IRegionalService;
 import com.ldq.graduation.design.services.IToiletPositionService;
 import com.ldq.graduation.design.services.IToiletService;
 import net.sf.json.JSONArray;
-//import org.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Random;
+
+//import org.json.JSONArray;
 
 
 @Controller
@@ -113,24 +116,36 @@ public class Admin {
 	 */
 	@RequestMapping("/login")
 	@ResponseBody
-	public String login(HttpServletRequest request) {
+	public JSONObject login(HttpServletRequest request) {
 //		账号
 		String adminAccount = request.getParameter("account");
 //		密码
 		String adminPassword = request.getParameter("password");
 		AdminInfo adminInfo = iAdminService.selectByaccount(adminAccount);
-//		System.out.println(adminInfo.toString());
 		String reason;
+		JSONObject message = new JSONObject();
 		if (adminInfo == null) {
 			reason = "账号错误";
-			return reason;
+			String stat = "登录失败";
+			message.clear();
+			message.put("stat", stat);
+			message.put("reason", reason);
+			return message;
 		} else if (!adminInfo.getAdminPassword().equals(adminPassword)) {
 			reason = "密码错误";
-			return reason;
+			String stat = "登录失败";
+			message.clear();
+			message.put("stat", stat);
+			message.put("reason", reason);
+			return message;
 		} else {
-			reason = "登录成功," + adminInfo.getAdminName();
+			String stat = "登录成功";
+			message.put("stat", stat);
+			message.put("adminAccount", adminAccount);
+			message.put("regionalName", adminInfo.getRegionalName());
+			message.put("adminName", adminInfo.getAdminName());
 			request.getSession().setAttribute("adminAccount", adminAccount);
-			return reason;
+			return message;
 		}
 	}
 
@@ -265,6 +280,7 @@ public class Admin {
 
 	/**
 	 * 获取某个厕所指定时间段的所有使用数据
+	 *
 	 * @param request 前端发来的数据
 	 * @return 某个厕所指定时间段内的所有厕位使用数据
 	 */
@@ -316,7 +332,38 @@ public class Admin {
 		//		厕所代号
 		String toiletCode = request.getParameter("toiletCode");
 		List<ToiletPositionInfo> toiletPositionInfos = iToiletPositionService.getToiletPositionInfo(regionalName, toiletCode);
-		System.out.println(toiletPositionInfos.toString());
 		return toiletPositionInfos;
 	}
+
+	/**
+	 * 获取指定管理员负责的厕所信息
+	 *
+	 * @param request 前端发来的数据
+	 * @return 查询到的数据
+	 */
+	@RequestMapping("/getToiletInfo")
+	@ResponseBody
+	public List getToiletInfo(HttpServletRequest request) {
+		String adminAccount = request.getParameter("adminAccount");
+		String reginoalName = iAdminService.selectByaccount(adminAccount).getRegionalName();
+		List<ToiletInfo> toiletInfos = iToiletService.getToiletInfo(reginoalName);
+		return toiletInfos;
+	}
+
+	/**
+	 * 获取当前厕位的使用状况
+	 *
+	 * @param request 前端发来的数据
+	 * @return 查询到的数据
+	 */
+	@RequestMapping("/getCurrentUseInfo")
+	@ResponseBody
+	public List getCurrentUseInfo(HttpServletRequest request) {
+		String regionalName = request.getParameter("regionalName");
+		String toiletCode = request.getParameter("toiletCode");
+		List<ToiletPositionUseInfo> toiletPositionUseInfos = iToiletPositionService.getCurrentUseInfo(regionalName, toiletCode);
+		return toiletPositionUseInfos;
+	}
+
+
 }

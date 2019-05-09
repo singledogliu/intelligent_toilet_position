@@ -27,7 +27,6 @@ public interface ToiletPositionMapper {
 
 	/**
 	 * 查询指定区域指定厕所的所有厕位信息
-	 *
 	 * @param regionalName 区域名称
 	 * @param toiletCode   厕所名称
 	 * @return 查询到的厕位信息

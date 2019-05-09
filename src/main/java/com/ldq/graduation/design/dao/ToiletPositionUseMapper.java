@@ -7,6 +7,7 @@
 package com.ldq.graduation.design.dao;
 
 
+import com.ldq.graduation.design.pojo.ToiletPositionInfo;
 import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -53,16 +54,6 @@ public interface ToiletPositionUseMapper {
 	 */
 	int deleteByregionalName(@Param("regionalName") String regionalName);
 
-	/**
-	 * 查询开始时间
-	 *
-	 * @param regionalName       区域名称
-	 * @param toiletCode         厕所代号
-	 * @param gender             性别
-	 * @param toiletPositionCode 厕位编号
-	 * @return 开始时间
-	 */
-	Timestamp selectStartTime(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("gender") String gender, @Param("toiletPositionCode") String toiletPositionCode);
 
 	/**
 	 * 通过区域名称查询该区域指定时间段内的所有厕位使用数据
@@ -82,6 +73,38 @@ public interface ToiletPositionUseMapper {
 	 * @return 某厕所指定时间段的所有使用数据
 	 */
 	List<ToiletPositionUseInfo> selectAllByToiletCode(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("date") String date);
+
+	/**
+	 * 查询某个厕位最新的一条数据
+	 *
+	 * @param regionalName       区域名称
+	 * @param toiletCode         厕所代号(名称）
+	 * @param gender             性别
+	 * @param toiletPositionCode 厕位编号
+	 * @param startTime          开始时间
+	 * @return 查询到的数据
+	 */
+	ToiletPositionUseInfo selectCurrentUseInfo(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("gender") String gender, @Param("toiletPositionCode") String toiletPositionCode, @Param("startTime") Timestamp startTime);
+
+	/**
+	 * 获取指定厕所已有的使用信息（每个厕位一条）
+	 *
+	 * @param regionalName 区域名称
+	 * @param toiletCode   厕所代号（名称）
+	 * @return 查询到的数据
+	 */
+	List<ToiletPositionInfo> selectExistsInfo(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode);
+
+	/**
+	 * 查询某个厕位最近的一次使用时间
+	 *
+	 * @param regionalName       区域名称
+	 * @param toiletCode         厕所代号（名称）
+	 * @param gender             性别
+	 * @param toiletPositionCode 厕位编号
+	 * @return 查询到的数据
+	 */
+	Timestamp selectMaxTime(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("gender") String gender, @Param("toiletPositionCode") String toiletPositionCode);
 
 }
 
