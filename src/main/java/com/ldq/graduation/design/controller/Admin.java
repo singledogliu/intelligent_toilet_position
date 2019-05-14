@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -272,9 +273,11 @@ public class Admin {
 	@ResponseBody
 	public List getRegionalStatistics(HttpServletRequest request) {
 		String regionalName = request.getParameter("regionalName");
-		String date = request.getParameter("date");
-		date = date + "%";
-		List<ToiletPositionUseInfo> regionalStatistics = iRegionalService.getRegionalStatistics(regionalName, date);
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		startDate = startDate + "%";
+		endDate = endDate + "%";
+		List<ToiletPositionUseInfo> regionalStatistics = iRegionalService.getRegionalStatistics(regionalName, startDate);
 		return regionalStatistics;
 	}
 
@@ -289,9 +292,11 @@ public class Admin {
 	public List getToiletStatistics(HttpServletRequest request) {
 		String regionalName = request.getParameter("regionalName");
 		String toiletCode = request.getParameter("toiletCode");
-		String date = request.getParameter("date");
-		date = date + "%";
-		List<ToiletPositionUseInfo> toiletStatistics = iToiletService.getToiletStatistics(regionalName, toiletCode, date);
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String action = request.getParameter("action");
+		String unit = request.getParameter("unit");
+		List toiletStatistics = iToiletService.getToiletStatistics(regionalName, toiletCode, startDate, endDate, action, unit);
 		return toiletStatistics;
 	}
 

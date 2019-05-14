@@ -11,12 +11,12 @@ package com.ldq.graduation.design.services.impl;
 import com.ldq.graduation.design.dao.ToiletMapper;
 import com.ldq.graduation.design.dao.ToiletPositionUseMapper;
 import com.ldq.graduation.design.pojo.ToiletInfo;
-import com.ldq.graduation.design.pojo.ToiletPositionUseInfo;
 import com.ldq.graduation.design.services.IToiletService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,13 +44,169 @@ public class ToiletImpl implements IToiletService {
 	 *
 	 * @param regionalName 区域名称
 	 * @param toiletCode   厕所代号
-	 * @param date         指定时间
+	 * @param endDate      结束时间时间
+	 * @param startDate    开始时间时间
 	 * @return 某个厕所指定时间段的所有使用数据
 	 */
 	@Override
-	public List<ToiletPositionUseInfo> getToiletStatistics(String regionalName, String toiletCode, String date) {
-		List<ToiletPositionUseInfo> toiletStatistics = toiletPositionUseMapper.selectAllByToiletCode(regionalName, toiletCode, date);
-		return toiletStatistics;
+	public List getToiletStatistics(String regionalName, String toiletCode, String startDate, String endDate, String action, String unit) {
+//		List useCount = new ArrayList();
+		List resultList = new ArrayList();
+		int menCount = 0;
+		int womenCount = 0;
+		String between = "between";
+		String like = "like";
+		String yearUnit = "year";
+		String monthUnit = "month";
+		String dayUnit = "day";
+		int loopDay = 31;
+		String startYear = startDate.split("-")[0];
+		String startMonth = startDate.split("-")[1];
+		String startDay = startDate.split("-")[2];
+		String endYear = endDate.split("-")[0];
+		String endMonth = endDate.split("-")[1];
+		String endDay = endDate.split("-")[2];
+		int theYear = Integer.parseInt(startYear);
+		boolean isLeap = false;
+		if ((theYear % 4 == 0 && theYear % 100 != 0) || theYear % 400 == 0) {
+			isLeap = true;
+		}
+
+		if (between.equals(action)) {
+			int localStartYear = Integer.parseInt(startYear);
+			int localStartMonth = Integer.parseInt(startMonth);
+			int localStartDay = Integer.parseInt(startDay);
+			//			按年查看
+			if (yearUnit.equals(unit)) {
+				int loop = Integer.parseInt(endYear) - Integer.parseInt(startYear);
+				for (int i = 0; i <= loop; i++) {
+					startDate = String.valueOf(localStartYear + i) + "%";
+					List localUseCount = new ArrayList();
+					menCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "男");
+					localUseCount.add(menCount);
+					womenCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "女");
+					localUseCount.add(womenCount);
+					resultList.add(localUseCount);
+				}
+			}
+//			按月查看
+			if (monthUnit.equals(unit)) {
+				int loop = (Integer.parseInt(endYear) - Integer.parseInt(startYear)) * 12 + (Integer.parseInt(endMonth) - Integer.parseInt(startMonth));
+				for (int i = 0; i <= loop; i++) {
+					String theLocalStartMonth = String.valueOf(localStartMonth);
+					String theLocalStartYear = String.valueOf(localStartYear);
+					if (localStartMonth < 10) {
+						theLocalStartMonth = "0" + theLocalStartMonth;
+					}
+					startDate = theLocalStartYear + "-" + theLocalStartMonth + "%";
+//					System.out.println(startDate);
+					List localUseCount = new ArrayList();
+					menCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "男");
+					localUseCount.add(menCount);
+					womenCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "女");
+					localUseCount.add(womenCount);
+					resultList.add(localUseCount);
+					localStartMonth += 1;
+					if (Integer.parseInt(startMonth) > 12) {
+						localStartYear += 1;
+						localStartMonth = 1;
+					}
+
+				}
+			}
+
+//			按天查看
+//			if (monthUnit.equals(unit)) {
+//				long localStartDate = new Date(startDate).getTime();
+//				long localendDate = new Date(startDate).getTime();
+//				long days = (localendDate - localStartDate) / (1000 * 60 * 60 * 24);
+//				for (int i = 0; i < days; i++) {
+//					String theLocalStartDay = String.valueOf(localStartDay);
+//					startDate = localStartYear + "-" + localStartMonth + "-" + theLocalStartDay + "%";
+//					List localUseCount = new ArrayList();
+//					menCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "男");
+//					localUseCount.add(menCount);
+//					womenCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "女");
+//					localUseCount.add(womenCount);
+//					resultList.add(localUseCount);
+//					localStartDay += 1;
+//				}
+//			}
+
+
+//			menCount = toiletPositionUseMapper.selectCountByToiletCodeAndGender(regionalName, toiletCode, startDate, endDate, "男");
+//			useCount.add(menCount);
+//			womenCount = toiletPositionUseMapper.selectCountByToiletCodeAndGender(regionalName, toiletCode, startDate, endDate, "女");
+//			useCount.add(womenCount);
+		}
+//
+		if (like.equals(action)) {
+//			按年查看
+			if (yearUnit.equals(unit)) {
+				for (int i = 1; i < 13; i++) {
+					List localUseCount = new ArrayList();
+					if (i < 10) {
+						startDate = startYear + "-0" + i + "%";
+					} else {
+						startDate = startYear + "-" + i + "%";
+					}
+					menCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "男");
+					localUseCount.add(menCount);
+					womenCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "女");
+					localUseCount.add(womenCount);
+					resultList.add(localUseCount);
+				}
+			}
+//			按月查看
+			if (monthUnit.equals(unit)) {
+				String localMonth = startMonth;
+				String localDay = null;
+				if (startMonth.equals("02")) {
+					if (isLeap == true) {
+						loopDay = 30;
+					} else {
+						loopDay = 29;
+					}
+				} else if ("04".equals(startMonth) || "06".equals(startMonth) || "09".equals(startMonth) || "11".equals(startMonth)) {
+					loopDay = 31;
+				} else {
+					loopDay = 32;
+				}
+				for (int i = 1; i < loopDay; i++) {
+					List localUseCount = new ArrayList();
+					if (i < 10) {
+						localDay = "0" + String.valueOf(i);
+					} else {
+						localDay = String.valueOf(i);
+					}
+					startDate = startYear + "-" + localMonth + "-" + localDay + "%";
+					menCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "男");
+					localUseCount.add(menCount);
+					womenCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "女");
+					localUseCount.add(womenCount);
+					resultList.add(localUseCount);
+				}
+			}
+//			按天查看
+			if (dayUnit.equals(unit)) {
+				String localStartDate = startDate;
+				for (int i = 1; i < 25; i++) {
+					List localUseCount = new ArrayList();
+					if (i < 10) {
+						startDate = localStartDate + " 0" + i + "%";
+					} else {
+						startDate = localStartDate + " " + i + "%";
+					}
+//					System.out.println(startDate);
+					menCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "男");
+					localUseCount.add(menCount);
+					womenCount = toiletPositionUseMapper.selectCountByToiletCodeAndGenderLike(regionalName, toiletCode, startDate, endDate, "女");
+					localUseCount.add(womenCount);
+					resultList.add(localUseCount);
+				}
+			}
+		}
+		return resultList;
 	}
 
 	/**

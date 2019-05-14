@@ -27,10 +27,11 @@ public interface IToiletService {
 	 *
 	 * @param regionalName 区域名称
 	 * @param toiletCode   厕所代号
-	 * @param date         指定时间
+	 * @param endDate      结束时间时间
+	 * @param startDate       开始时间时间
 	 * @return 某个厕所指定时间段的所有使用数据
 	 */
-	List<ToiletPositionUseInfo> getToiletStatistics(String regionalName, String toiletCode, String date);
+	List getToiletStatistics(String regionalName, String toiletCode, String startDate, String endDate, String action, String unit);
 
 	/**
 	 * 添加厕所信息

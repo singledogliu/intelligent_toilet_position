@@ -69,10 +69,24 @@ public interface ToiletPositionUseMapper {
 	 *
 	 * @param regionalName 区域名称
 	 * @param toiletCode   厕所代号
-	 * @param date         指定时间
+	 * @param startDate    开始时间
+	 * @param endDate      结束时间
+	 * @param gender       性别
 	 * @return 某厕所指定时间段的所有使用数据
 	 */
-	List<ToiletPositionUseInfo> selectAllByToiletCode(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("date") String date);
+	int selectCountByToiletCodeAndGender(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
+
+	/**
+	 * 查询某厕所指定时间段的所有使用数据
+	 *
+	 * @param regionalName 区域名称
+	 * @param toiletCode   厕所代号
+	 * @param startDate    开始时间
+	 * @param endDate      结束时间
+	 * @param gender       性别
+	 * @return 某厕所指定时间段的所有使用数据
+	 */
+	int selectCountByToiletCodeAndGenderLike(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
 
 	/**
 	 * 查询某个厕位最新的一条数据
