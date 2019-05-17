@@ -64,6 +64,9 @@ public interface ToiletPositionUseMapper {
 	 */
 	List<ToiletPositionUseInfo> selectAllByRegionalName(@Param("regionalName") String regionalName, @Param("date") String date);
 
+//	List<ToiletPositionUseInfo> selectAllDurationByRegionalName(@Param("regionalName") String regionalName, @Param("date") String date);
+
+
 	/**
 	 * 查询某厕所指定时间段的所有使用数据
 	 *
@@ -75,6 +78,9 @@ public interface ToiletPositionUseMapper {
 	 * @return 某厕所指定时间段的所有使用数据
 	 */
 	int selectCountByToiletCodeAndGender(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
+
+	Long selectDurationByToiletCodeAndGender(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
+
 
 	/**
 	 * 查询某厕所指定时间段的所有使用数据
@@ -88,6 +94,9 @@ public interface ToiletPositionUseMapper {
 	 */
 	int selectCountByToiletCodeAndGenderLike(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
 
+	Long selectDurationByToiletCodeAndGenderLike(@Param("regionalName") String regionalName, @Param("toiletCode") String toiletCode, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
+
+
 	/**
 	 * 查询某个区域指定时间段的使用数据
 	 *
@@ -99,6 +108,9 @@ public interface ToiletPositionUseMapper {
 	 */
 	int selectCountByRegionalNameBetween(@Param("regionalName") String regionalName, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
 
+	Long selectDurationByRegionalNameBetween(@Param("regionalName") String regionalName, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
+
+
 	/**
 	 * 查询某个区域指定时间段的使用数据
 	 *
@@ -109,6 +121,9 @@ public interface ToiletPositionUseMapper {
 	 * @return 查询到的数据
 	 */
 	int selectCountByRegionalNameLike(@Param("regionalName") String regionalName, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
+
+
+	Long selectDurationByRegionalNameLike(@Param("regionalName") String regionalName, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("gender") String gender);
 
 
 	/**

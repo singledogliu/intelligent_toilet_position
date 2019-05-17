@@ -31,7 +31,7 @@ public interface IToiletService {
 	 * @param startDate       开始时间时间
 	 * @return 某个厕所指定时间段的所有使用数据
 	 */
-	List getToiletStatistics(String regionalName, String toiletCode, String startDate, String endDate, String action, String unit);
+	List getToiletStatistics(String regionalName, String toiletCode, String startDate, String endDate, String action, String unit, String timesOrTime);
 
 	/**
 	 * 添加厕所信息

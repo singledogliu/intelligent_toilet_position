@@ -84,9 +84,26 @@ WHERE
         and end_time is not null
     </select>
 
+    <select id="selectDurationByToiletCodeAndGender" resultType="Long">
+        select sum(duration) from toilet_position_use
+        where regional_name = #{regionalName}
+        and toilet_code = #{toiletCode}
+        and gender = #{gender}
+        and start_time between #{startDate} and #{endDate}
+        and end_time is not null
+    </select>
+
     <!--查询某区域指定时间段的所有使用数据数量-->
     <select id="selectCountByRegionalNameBetween" resultType="int">
         select count(*) from toilet_position_use
+        where regional_name = #{regionalName}
+        and gender = #{gender}
+        and start_time between #{startDate} and #{endDate}
+        and end_time is not null
+    </select>
+
+    <select id="selectDurationByRegionalNameBetween" resultType="Long">
+        select sum(duration) from toilet_position_use
         where regional_name = #{regionalName}
         and gender = #{gender}
         and start_time between #{startDate} and #{endDate}
@@ -103,9 +120,26 @@ WHERE
         and end_time is not null
     </select>
 
+    <select id="selectDurationByToiletCodeAndGenderLike" resultType="Long">
+      select sum(duration) from toilet_position_use
+        where regional_name = #{regionalName}
+        and toilet_code = #{toiletCode}
+        and gender = #{gender}
+        and start_time like #{startDate}
+        and end_time is not null
+    </select>
+
     <!--查询某区域某天/月/年的所有使用数据数量-->
     <select id="selectCountByRegionalNameLike" resultType="int">
         select count(*) from toilet_position_use
+        where regional_name = #{regionalName}
+        and gender = #{gender}
+        and start_time like #{startDate}
+        and end_time is not null
+    </select>
+
+    <select id="selectDurationByRegionalNameLike" resultType="Long">
+        select sum(duration) from toilet_position_use
         where regional_name = #{regionalName}
         and gender = #{gender}
         and start_time like #{startDate}

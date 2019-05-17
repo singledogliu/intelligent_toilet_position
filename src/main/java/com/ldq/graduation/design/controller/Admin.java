@@ -296,7 +296,9 @@ public class Admin {
 		String endDate = request.getParameter("endDate");
 		String action = request.getParameter("action");
 		String unit = request.getParameter("unit");
-		List toiletStatistics = iToiletService.getToiletStatistics(regionalName, toiletCode, startDate, endDate, action, unit);
+		String timesOrTime = request.getParameter("timesOrTime");
+//		System.out.println(timesOrTime);
+		List toiletStatistics = iToiletService.getToiletStatistics(regionalName, toiletCode, startDate, endDate, action, unit, timesOrTime);
 		return toiletStatistics;
 	}
 
