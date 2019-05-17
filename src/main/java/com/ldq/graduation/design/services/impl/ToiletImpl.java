@@ -75,7 +75,7 @@ public class ToiletImpl implements IToiletService {
 		if (between.equals(action)) {
 			int localStartYear = Integer.parseInt(startYear);
 			int localStartMonth = Integer.parseInt(startMonth);
-			int localStartDay = Integer.parseInt(startDay);
+//			int localStartDay = Integer.parseInt(startDay);
 			//			按年查看
 			if (yearUnit.equals(unit)) {
 				int loop = Integer.parseInt(endYear) - Integer.parseInt(startYear);

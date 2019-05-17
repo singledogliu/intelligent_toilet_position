@@ -8,6 +8,7 @@ package com.ldq.graduation.design.controller;
 
 import com.ldq.graduation.design.services.IToiletPositionService;
 import io.goeasy.GoEasy;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -127,5 +128,28 @@ public class Update {
 			goEasy.publish("message", String.valueOf(message));
 		}
 		return resultNum;
+	}
+
+	/**
+	 * 检测厕位是否长时间未被使用
+	 *
+	 * @param request 前端发来的数据
+	 */
+	@RequestMapping("/CheckToiletPosition")
+	@ResponseBody
+	public void CheckToiletPosition(HttpServletRequest request) {
+//		System.out.println("我进来了");
+		String regionalName = request.getParameter("regionalName");
+		System.out.println(regionalName);
+		String toiletCode = request.getParameter("toiletCode");
+		String maybeBadToiletPositionStr = request.getParameter("maybeBadToiletPosition");
+		JSONArray maybeBadToiletPosition = JSONArray.fromObject(maybeBadToiletPositionStr);
+		JSONObject message = new JSONObject();
+		message.put("regionalName", regionalName);
+		message.put("toiletCode", toiletCode);
+		message.put("maybeBadToiletPosition", maybeBadToiletPosition);
+		System.out.println(message.toString());
+		GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io", "BC-974faf5d63d14169bffac6b4aba38848");
+		goEasy.publish("maybeBadToiletPosition", String.valueOf(message));
 	}
 }
