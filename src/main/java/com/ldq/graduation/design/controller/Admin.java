@@ -82,7 +82,7 @@ public class Admin {
 	@ResponseBody
 	public String getIdentifyingCode(HttpServletRequest httpServletRequest) {
 		String phone = httpServletRequest.getParameter("phone");
-		DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAIdF0xHjRDsHAD", "HAbQSwP2o1BZdrcQSxLhTfXkhoL5ic");
+		DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "******", "************");
 		IAcsClient client = new DefaultAcsClient(profile);
 		Random random = new Random();
 		int identifyingCodeInt = random.nextInt(1000000);
